@@ -1,0 +1,199 @@
+import cosas.*
+
+describe "testeo cosas de la casa" {
+    
+    test "Compran para la casa una heladera, cama y plancha, en ese orden" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha) 
+
+        assert.equals([heladera, cama, plancha], casa.compras)
+    }
+    
+    test "Compran para la casa una heladera, cama y plancha, indicando la cantidad de cosas compradas 3" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)        
+
+        assert.equals(3, casa.cantidadDeCosasCompradas())
+    }
+
+    test "Con una heladera, cama y plancha para la casa, indica que tiene algún electrodoméstico" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)        
+
+        assert.that(casa.tieneAlgun(electrodomestico))
+    }
+
+    test "Con una heladera, cama y plancha para la casa, indica que tiene algún mueble" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)  
+        
+        assert.that(casa.tieneAlgun(mueble))
+    }
+
+    test "Con una heladera, cama y plancha para la casa, indica que no tiene alguna comida" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)  
+        
+        assert.notThat(casa.tieneAlgun(comida))
+    }
+
+    test "Comprando heladera, cama y plancha para la casa, entonces viene de comprar un electrodoméstico y no viene de comprar mueble" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)
+
+        assert.that(casa.vieneDeComprar(electrodomestico))
+        assert.notThat(casa.vieneDeComprar(mueble))
+    }
+
+    test "es derrochona" {
+        cuentaCorriente.saldo(29200)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)
+
+        assert.that(casa.esDerrochona())
+        assert.equals(0, cuentaCorriente.saldo())
+    }
+
+    test "Comprando heladera, cama y plancha para la casa, los electrodomésticos comprados son la heladera y plancha" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)
+
+        assert.equals(#{heladera, plancha}, casa.comprados(electrodomestico))
+    }
+
+    test "Comprando heladera, cama y plancha para la casa, el mueble comprado es la cama" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)
+
+        assert.equals(#{cama}, casa.comprados(mueble))
+    }
+
+    test "Comprando heladera, cama y plancha para la casa, no hay comida comprada" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)
+
+        assert.notThat(casa.tieneAlgun(comida))
+    }
+
+    test "Comprando heladera, cama y plancha para la casa, no es mala época" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)
+
+        assert.notThat(casa.malaEpoca())
+    }
+
+    test "Comprando heladera, cama y plancha para la casa, si le preguntamos que le falta comprar de la siguiente lista [tiraDeAsado, plancha, paqueteDeFideos] retorna la tira de asado y el paquete de fideos" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)
+
+        assert.equals([tiraDeAsado, paqueteDeFideos], casa.queFaltaComprar([tiraDeAsado, plancha, paqueteDeFideos]))
+    }
+
+    test "Comprando heladera, cama y plancha para la casa, retorna que falta comida" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)
+
+        assert.that(casa.faltaComida())
+    }
+
+    test "Comprando heladera, cama y plancha para la casa, retorna las categorias compradas son electrodoméstico y mueble" {
+        cuentaCorriente.saldo(30000)
+        casa.comprar(heladera)
+        casa.comprar(cama)
+        casa.comprar(plancha)
+
+        assert.equals(#{electrodomestico, mueble}, casa.categoriasCompradas())
+    }
+
+
+}
+
+describe "testeo cosas de la cuenta corriente" {
+  test "Cuenta con 20 de saldo, depositando 100, el saldo deberia dar 1020" {
+    cuentaCorriente.saldo(20)
+    cuentaCorriente.depositar(1000)
+
+    assert.equals(1020, cuentaCorriente.saldo())
+  }
+
+  test "Cuenta con 1020 de saldo, extraigo 50 deberia quedar 970" {
+    cuentaCorriente.saldo(1020)
+    cuentaCorriente.extraer(50)
+
+    assert.equals(970, cuentaCorriente.saldo())
+  }
+
+  test "Cuenta con 1020 de saldo, y quiero extraer 2000 deberia lanzar error" {
+    cuentaCorriente.saldo(1020)
+
+    assert.throwsException({ cuentaCorriente.extraer(2000) })
+  }
+}
+
+describe "testeo cosas de la cuenta con gastos" {
+  test "Cuenta con saldo de 500 y con 20 de costo por operación, deposito 1000, el saldo deberia quedar en 1480" {
+    cuentaConGastos.saldo(500)
+    cuentaConGastos.costoOperacion(20)
+    cuentaConGastos.depositar(1000)
+
+    assert.equals(1480, cuentaConGastos.saldo())
+  }
+
+  test "Cuenta con saldo 1480 y extraigo 30, deberia quedar 1450" {
+    cuentaConGastos.saldo(1480)
+    cuentaConGastos.extraer(30)
+
+    assert.equals(1450, cuentaConGastos.saldo())
+  }
+
+  test "Cuenta con saldo 1450, deposito 2000, lanzando el error y el saldo sigue en 1450" {
+    cuentaConGastos.saldo(1450)
+    
+    assert.throwsException({ cuentaConGastos.depositar(2000) })
+    assert.equals(1450, cuentaConGastos.saldo())
+  }
+
+  test "Cuenta con saldo 1450 y extraigo 2000 dejando el saldo en -550" {
+    cuentaConGastos.saldo(1450)
+    cuentaConGastos.extraer(2000)
+
+    assert.equals(-550, cuentaConGastos.saldo())
+  }
+}
+
+describe "caso cuenta elegida" {
+  test "Compra con cuenta corriente con saldo 1000, donde se compra de tira de asado y paquete de fideos, deberia quedar la cuenta con saldo 600" {
+    casa.cuenta(cuentaCorriente)
+    cuentaCorriente.saldo(1000)
+    casa.comprar(tiraDeAsado)
+    casa.comprar(paqueteDeFideos)
+
+
+    assert.equals(600, cuentaCorriente.saldo())
+  }
+}
