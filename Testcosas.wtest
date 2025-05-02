@@ -8,7 +8,7 @@ describe "testeo cosas de la casa" {
         casa.comprar(cama)
         casa.comprar(plancha) 
 
-        assert.equals([heladera, cama, plancha], casa.compras())
+        assert.equals([heladera, cama, plancha], casa.compras)
     }
     
     test "Compran para la casa una heladera, cama y plancha, indicando la cantidad de cosas compradas 3" {
@@ -26,7 +26,7 @@ describe "testeo cosas de la casa" {
         casa.comprar(cama)
         casa.comprar(plancha)        
 
-        assert.equals(true, casa.tieneAlgun(electrodomestico))
+        assert.that(casa.tieneAlgun(electrodomestico))
     }
 
     test "Con una heladera, cama y plancha para la casa, indica que tiene algún mueble" {
@@ -35,7 +35,7 @@ describe "testeo cosas de la casa" {
         casa.comprar(cama)
         casa.comprar(plancha)  
         
-        assert.equals(true, casa.tieneAlgun(mueble))
+        assert.that(casa.tieneAlgun(mueble))
     }
 
     test "Con una heladera, cama y plancha para la casa, indica que no tiene alguna comida" {
@@ -44,7 +44,7 @@ describe "testeo cosas de la casa" {
         casa.comprar(cama)
         casa.comprar(plancha)  
         
-        assert.equals(false, casa.tieneAlgun(comida))
+        assert.notThat(casa.tieneAlgun(comida))
     }
 
     test "Comprando heladera, cama y plancha para la casa, entonces viene de comprar un electrodoméstico y no viene de comprar mueble" {
@@ -53,8 +53,8 @@ describe "testeo cosas de la casa" {
         casa.comprar(cama)
         casa.comprar(plancha)
 
-        assert.equals(true, casa.vieneDeComprar(electrodomestico))
-        assert.equals(false, casa.vieneDeComprar(mueble))
+        assert.that(casa.vieneDeComprar(electrodomestico))
+        assert.notThat(casa.vieneDeComprar(mueble))
     }
 
     test "es derrochona" {
@@ -63,7 +63,7 @@ describe "testeo cosas de la casa" {
         casa.comprar(cama)
         casa.comprar(plancha)
 
-        assert.equals(true, casa.esDerrochona())
+        assert.that(casa.esDerrochona())
         assert.equals(0, cuentaCorriente.saldo())
     }
 
@@ -91,7 +91,7 @@ describe "testeo cosas de la casa" {
         casa.comprar(cama)
         casa.comprar(plancha)
 
-        assert.equals(false, casa.tieneAlgun(comida))
+        assert.notThat(casa.tieneAlgun(comida))
     }
 
     test "Comprando heladera, cama y plancha para la casa, no es mala época" {
@@ -100,7 +100,7 @@ describe "testeo cosas de la casa" {
         casa.comprar(cama)
         casa.comprar(plancha)
 
-        assert.equals(false, casa.malaEpoca())
+        assert.notThat(casa.malaEpoca())
     }
 
     test "Comprando heladera, cama y plancha para la casa, si le preguntamos que le falta comprar de la siguiente lista [tiraDeAsado, plancha, paqueteDeFideos] retorna la tira de asado y el paquete de fideos" {
@@ -118,7 +118,7 @@ describe "testeo cosas de la casa" {
         casa.comprar(cama)
         casa.comprar(plancha)
 
-        assert.equals(true, casa.faltaComida())
+        assert.that(casa.faltaComida())
     }
 
     test "Comprando heladera, cama y plancha para la casa, retorna las categorias compradas son electrodoméstico y mueble" {
